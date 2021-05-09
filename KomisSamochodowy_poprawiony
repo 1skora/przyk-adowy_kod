@@ -1,0 +1,367 @@
+// przykładowy kod nadpisany pod Objectivity
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace KomisSamochodowy_poprawiony
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+
+            Menu main = new Menu();
+
+            Console.ReadKey();
+        }
+    }
+ class Menu
+    {
+        // praca na jednej liscie
+        CarList lista1 = new CarList();
+
+        //CarList lista2 = new CarList();
+       // CarList lista3 = new CarList();
+
+        public Menu()
+        {
+
+        start:
+
+            for (int i = 0; i < 5;)
+            {
+
+                Console.WriteLine("  wybierz: \n 1-dodaj\n 2-usun\n 3-znajdz\n 4-wypisz\n 5-wyjdz ");
+                int liczba = int.Parse(Console.ReadLine());
+                i = liczba;
+
+                switch (liczba)
+                {
+
+                    case 1:
+                        //dodaj
+                        lista1.AddCar();
+
+                        break;
+                    case 2:
+
+                        lista1.DeleteCar();
+                        //Usun
+
+                        break;
+                    case 3:
+
+                        // Znajdz
+                        break;
+                    case 4:
+                        //Wypisz
+
+                        Console.WriteLine($"1. Sortuj alfabetycznie \n 2.Sortuj malejono silniki\n 3.Sortuj rosnaco silniki \n 4. Sortuj malejąco rocznik \n 5. Sortuj rosnaco rocznik \n 6.Cofnij  ");
+                        int sorte = int.Parse(Console.ReadLine());
+
+                        for (; sorte < 7;)
+                        {
+                            Console.WriteLine($"1. Sortuj alfabetycznie \n 2.Sortuj malejono silniki\n 3.Sortuj rosnaco silniki \n 4. Sortuj malejąco rocznik \n 5. Sortuj rosnaco rocznik \n 6.Cofnij  ");
+
+                            sorte = int.Parse(Console.ReadLine());
+
+                            switch (sorte)
+                            {
+                                case 1:
+                                    lista1.ModelAlphabetically();
+                                    break;
+                                case 2:
+                                    lista1.DescendingEngine();
+
+                                    break;
+                                case 3:
+                                    lista1.AscendinglyEngine();
+                                    break;
+                                case 4:
+                                    lista1.DescendingVintage();
+                                    break;
+                                case 5:
+                                    lista1.AscendinglyVintage();
+
+                                    break;
+                                case 6:
+
+                                    //cofnij
+
+                                    goto start;
+
+                            }
+
+                        }
+
+                        break;
+                    case 5:
+
+                        Console.WriteLine("DOZOBACZENIA !!!");
+                        // Wyjdz
+                        break;
+
+                }
+
+            }
+
+        }
+    }
+
+ class CarList
+    {
+        private List<Car> list = new List<Car>();
+        public void AddCar() 
+        {
+            Console.WriteLine("ile samochodow ");
+            int x = int.Parse(Console.ReadLine());
+            var cars = new Car[x];
+
+            for (int i = 0; i < x; i++)
+            {
+                Console.WriteLine($"samochod {i + 1} ");
+
+                Console.WriteLine("marka");
+                string y = Console.ReadLine();
+
+                Console.WriteLine("rocznik");
+
+                int z = int.Parse(Console.ReadLine());
+                Console.WriteLine("silnik");
+
+                double q = double.Parse(Console.ReadLine(), System.Globalization.CultureInfo.InvariantCulture);
+
+                cars[i] = new Car(y, z, q);
+
+                list.Add(cars[i]);
+                // Samochod s[i] = new Samochod(y, z, q);
+
+            }
+
+        }
+
+        public void DeleteCar()
+        {
+
+            int i = 0;
+
+            foreach (var item in list)
+            {
+
+                Console.WriteLine(i + ". " + item.Model + "- | -" + item.Vintage + "  ||| pojemnosc - | " + item.Engine);
+
+                i++;
+
+            }
+
+            Console.WriteLine("Ktory elemet listy usunac ?");
+
+            int x = int.Parse(Console.ReadLine());
+
+            list.RemoveAt(x);
+
+        }
+
+        //public enum eSortType
+        //{
+        //    rocznik = 0,
+        //    pojemnosc = 1,
+        //}
+        //public IEnumerable<Car> SortBy(eSortType sortType) 
+        //{ 
+
+        //}
+        //public void Wypisz() { 
+
+        //}
+
+        public void AscendinglyVintage()
+        {
+
+            list.Sort(new CarComparerAscendinglyVintage());
+
+            foreach (var item in list)
+            {
+
+                Console.WriteLine(item.Model + "- | -" + item.Vintage + "  ||| pojemnosc - | " + item.Engine);
+
+            }
+
+        }
+
+        public void DescendingVintage()
+        {
+
+            list.Sort(new CarComparerDescendingVintage());
+
+            foreach (var item in list)
+            {
+
+                Console.WriteLine(item.Model + "- | -" + item.Vintage + "  ||| pojemnosc - | " + item.Engine);
+
+            }
+
+        }
+
+        public void AscendinglyEngine()
+        {
+
+            list.Sort(new CarComparerAscendinglyEngine());
+
+            foreach (var item in list)
+            {
+
+                Console.WriteLine(item.Model + "- | -" + item.Vintage + "  ||| pojemnosc - | " + item.Engine);
+
+            }
+
+        }
+
+        public void DescendingEngine()
+        {
+
+            list.Sort(new CarComparerDescendingEngine());
+
+            foreach (var item in list)
+            {
+
+                Console.WriteLine(item.Model + "- | -" + item.Vintage + "  ||| pojemnosc - | " + item.Engine);
+
+            }
+
+        }
+
+        public void ModelAlphabetically()
+        {
+
+            list.Sort();
+
+            foreach (var item in list)
+            {
+
+                Console.WriteLine(item.Model + "- | -" + item.Vintage + "  ||| pojemnosc - | " + item.Engine);
+
+            }
+
+        }
+
+    }
+
+ class CarComparerDescendingVintage : IComparer<Car>
+    {
+        public int Compare(Car x, Car y)
+        {
+
+            if (x.Vintage > y.Vintage)
+                return 1;
+            else if (x.Vintage == y.Vintage)
+                return 0;
+            else
+                return -1;
+
+        }
+
+    }
+
+class CarComparerDescendingEngine : IComparer<Car>
+    {
+        public int Compare(Car x, Car y)
+        {
+
+            if (x.Engine > y.Engine)
+                return 1;
+            else if (x.Engine == y.Engine)
+                return 0;
+            else
+                return -1;
+
+        }
+
+    }
+ class CarComparerAscendinglyVintage : IComparer<Car>
+    {
+        public int Compare(Car x, Car y)
+        {
+
+            if (x.Vintage < y.Vintage)
+                return 1;
+            else if (x.Vintage == y.Vintage)
+                return 0;
+            else
+                return -1;
+
+        }
+
+    }
+class CarComparerAscendinglyEngine : IComparer<Car>
+    {
+        public int Compare(Car x, Car y)
+        {
+
+            if (x.Engine < y.Engine)
+                return 1;
+            else if (x.Engine == y.Engine)
+                return 0;
+            else
+                return -1;
+
+        }
+
+    }
+class Car
+    {
+
+            private int vintage;
+            private double engine;
+
+            public string Model { get; set; }
+            public int Vintage
+            {
+                get
+                {
+                    return vintage;
+                }
+
+                set
+                {
+                    if (value < 1900 || value > 2021)
+                    {
+                    }
+                    else
+                    {
+                        vintage = value;
+                    }
+                }
+            }
+            public double Engine
+            {
+                get
+                {
+                    return engine;
+                }
+
+                set
+                {
+                    if (value < 0.1 || value > 9.9)
+                    {
+                    }
+                    else
+                    {
+                        engine = value;
+                    }
+                }
+            }
+
+            public Car(string Model, int Vintage, double Engine)
+            {
+                this.Model = Model;
+                this.Vintage = Vintage;
+                this.Engine = Engine;
+
+            }
+
+        }
+
+}
